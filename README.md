@@ -1,2 +1,2 @@
-# this.is.not.a.repository
-Info 3 Projekt
+# INF3_PRAK
+Source code for practicals WS2019/2020
