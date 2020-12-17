@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "main.C": "cpp"
+        "main.C": "cpp",
+        "TASK3.C": "cpp"
     }
 }
