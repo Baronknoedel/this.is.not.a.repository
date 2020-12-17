@@ -27,6 +27,7 @@ using namespace std;
 
 
 int main(){
+    cout << "Hello world!";
 	srand(time(nullptr));
 
     return 0;
