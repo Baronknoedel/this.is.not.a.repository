@@ -81,6 +81,8 @@ public:
 			y++;
 		}
 
+		cout << endl << endl;
+
 		myWorld.printBoard();
 		cout << "alle Schiffe versenkt:" << endl;
 		cout << "anzahl Schuesse verwendet:" << c << endl;
