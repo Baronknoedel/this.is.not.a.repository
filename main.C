@@ -22,13 +22,17 @@
 #include "TASK4.H"
 #include "TASK5.H"
 #include "TASK6.H"
+#include "My_Training_Shots.c"
 
 using namespace std;
 
 
 int main(){
-    cout << "Hello world!";
+    
 	srand(time(nullptr));
+
+    My_Training_Shots Gib_ihm;
+    Gib_ihm.varianteA();
 
     return 0;
 }
