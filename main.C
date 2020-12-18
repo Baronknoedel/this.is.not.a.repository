@@ -28,8 +28,8 @@ using namespace std;
 
 
 int main(){
-    
 	srand(time(nullptr));
+    int a;
 
     My_Training_Shots Gib_ihm;
     Gib_ihm.varianteA();
