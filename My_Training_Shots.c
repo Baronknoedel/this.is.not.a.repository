@@ -100,54 +100,79 @@ public:
 
 		srand (time(NULL));
 
-		int res=0;
+		int res=0; // Rückgabewert Schuss
 		int c = 0; // Schuss Counter
 		int x = 0; // X wert Schuss
 		int y = 0; // Y wert Schuss
-		int i = 0;
 
-		int a [xMax] [yMax]; // Kontroll Array
-		
-		int p = xMax*yMax;
+		// Kontroll Array erzeugen
+		int a [xMax] [yMax]; 
 		
 		myWorld2.printBoard();
 
 		cout << endl;
 
-		// 0 setzen des Kontroll Arrays
-		while(i<=xMax) 
-		{
-			int n = 0;
+	
+		int k;
+		int j;
 
-			while (n != yMax)
+
+		//Array Nullsetzen
+	
+		for(k=0; k<xMax;k++)
+		{	
+			for(j=0; j<yMax;j++)
 			{
-				a [i] [n] = 0;
+				a[k][j]=0; 
 				
-				n++;
-
 			}
-
-			i++;
 		}
 
+		/*
+		
+		Array Ausgabe
+		
+		for(k=0; k<xMax;k++)
+		{	
+			for(j=0; j<yMax;j++)
+			{
+				cout<<a[k][j]<<endl;
+				
+			}
+		}*/
 
-		while(res != 4)
+		do
 		{
 
 				x = rand () % xMax + 1;
 				y = rand () % yMax + 1;
 
-
-				if (a [x] [y] = 0)
+				if (a[x][y] == 1)
+				{ }
+				else
 				{
 				res = myWorld2.shoot(x, y);
+				cout << "ich habe nach X:" << x << " und Y:" << y << "geschossen !" << endl;
+				if(res == 1)
+				{
+					cout<<"	Schuss nummer:"<< c <<" war ein Treffer!!"<<endl;
 				}
-				else {}
-
+				else if ( res == 0)
+				{
+					cout<<"	Schuss nummer:"<< c <<" ging daneben"<<endl;
+				}
 				c++;
+				a[x][y] = 1;
+				}
+
+			if (res == 4)
+			{
+				cout<< " ich breche jetzt ab da alle Schiffe versenkt sind " << endl;
+				break;
+			}
 
 
-		}
+		} while (res != 4);
 		
 
 		cout << endl << endl;
