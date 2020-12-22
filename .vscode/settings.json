@@ -2,6 +2,13 @@
     "files.associations": {
         "main.C": "cpp",
         "TASK3.C": "cpp",
+<<<<<<< Updated upstream
         "SIMPLESOCKET.C": "cpp"
+=======
+        "server.C": "cpp",
+        "mainTest.C": "cpp",
+        "SIMPLESOCKET.C": "cpp",
+        "SHA256.C": "cpp"
+>>>>>>> Stashed changes
     }
 }
