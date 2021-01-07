@@ -17,7 +17,8 @@ using namespace std;
 #include <time.h>
 #include <stdlib.h>
 
-void VarianteA(TCPclient *ptrtcp);
+void StartNewGame(TCPclient *ptrtcp);
+int VarianteA(TCPclient *ptrtcp);
 
 stringstream msgStream;
 string response = "";
@@ -30,47 +31,50 @@ int main()
 	string host = "localhost";
 	tcp.conn(host , 20220);
 
-	varianteA (&tcp);
+	int x = varianteA (&tcp);
+	cout << "Anzahl Schuesse: " << x << endl;
 }
 
-void Variante
+void StartNewGame(TCPclient *ptrtcp)
+{
+	msgStream << "NEWGAME";
+	//response = "";
+	ptrtcp->sendData(msgStream.str());
+	//msgStream.str("");
+	response = ptrtcp->receive(32);
+}
 
 	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld nacheinander beschossen wird
-	void varianteA(TCPclient *ptrtcp){
+	int varianteA(TCPclient *ptrtcp){
+		StartNewGame(ptrtcp);
 		int x = 1;
 		int y = 1;
-		int c = 0;
+		int counter = 0;
 		int res;
 		
 		cout << endl;
 
-		while(y <= yMax)
+		while(y <= 10)
 		{
-			while(x <= xMax)
+			while(x <= 10)
 			{
-				res = myWorld.shoot(x, y);
-				c++;
-				if (res == 4)
-				{
-					break;
-				}
+				msgStream << "SHOT[" <<  x << ", "<< y <<"]" ;
+				ptrtcp->sendData(msgStream.str());
+				msgStream.str("");
+				response = ptrtcp->receive(32);
+				counter++;
 				x++;
 
-			}
-			x = 1;
-			if (res == 4)
+				if(response.compare(0,8,"RESULT[4") == 0)
 				{
-					break;
+					return counter;
 				}
-			y++;
+
+				x++;
+			}
+			y++;	
 		}
-
-		cout << endl << endl;
-
-		myWorld.printBoard();
-		cout << "alle Schiffe versenkt:" << endl;
-		cout << "anzahl Schuesse verwendet:" << c << endl;
-		
+	return counter;
 	}
 /*
 	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld zufällig beschossen wird
@@ -161,4 +165,4 @@ void Variante
 		
 	};
 }	/* namespace std */
-#endif /* My_Training_Shots_C_ */
+//#endif /* My_Training_Shots_C_ */
