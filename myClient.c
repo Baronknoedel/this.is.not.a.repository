@@ -1,69 +1,47 @@
 /*
  * My_Training_Shots.c
  *
- *  Created on: 18.12.2020
+ *  Created on: 07.01.2021
  */
 
-#ifndef My_Training_Shots_C_
-#define My_Training_Shots_C_
-#include "TASK3.H"
+//#ifndef My_Training_Shots_C_   Vom alten Trainingsprogramm
+//#define My_Training_Shots_C_    könnte wichtig sein
 
-
-/**
- *
- * \namespace std
- *
- * \brief Namesapce für Lösungen des Praktikums
- *
- */
-namespace std {
+using namespace std;
 #include <stdio.h>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <unistd.h> //contains various constants
+#include "SIMPLESOCKET.H"
 #include <time.h>
 #include <stdlib.h>
 
-/**
- *
- * \class My_Training_Shots
- *
- * \brief Algorithmus um alle Schiffe zu versenken
- */
-class My_Training_Shots {
-public:
-	//Festlegung der Parameter für die zu erzeugende Welt
+void VarianteA(TCPclient *ptrtcp);
 
-	// Länge des Spielfeldes
-	int xMax = 10;
+stringstream msgStream;
+string response = "";
 
-	//Höhe des Spielfeldes
-	int yMax = 10;
+int main()
+{
+	srand(time(NULL));
+	TCPclient tcp;
 
-	// Anzahl der fünfer Schiffe
-	int fiver = 1;
+	string host = "localhost";
+	tcp.conn(host , 20220);
 
-	// Anzahl der vierer Schiffe
-	int fourer = 1;
+	varianteA (&tcp);
+}
 
-	// Anzahl der dreier Schiffe
-	int threer = 1;
-
-	// Anzahl der zweier Schiffe
-	int twoer = 1;
-
-
-	// Erzeugung eines Objektes der Klasse World aus Task 3
-	TASK3::World myWorld = TASK3::World(xMax, yMax, fiver, fourer, threer, twoer);
-	TASK3::World myWorld2 = TASK3::World(xMax, yMax, fiver, fourer, threer, twoer);
-
-
+void Variante
 
 	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld nacheinander beschossen wird
-	void varianteA(){
+	void varianteA(TCPclient *ptrtcp){
 		int x = 1;
 		int y = 1;
 		int c = 0;
 		int res;
-		myWorld.printBoard();
-
+		
 		cout << endl;
 
 		while(y <= yMax)
@@ -94,7 +72,7 @@ public:
 		cout << "anzahl Schuesse verwendet:" << c << endl;
 		
 	}
-
+/*
 	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld zufällig beschossen wird
 	void varianteB(){
 
@@ -138,7 +116,7 @@ public:
 				
 			}
 		}*/
-
+/*
 		do
 		{
 
