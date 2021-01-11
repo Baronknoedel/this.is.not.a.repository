@@ -39,16 +39,11 @@ main.o:	main.C
 mainTest.o:	mainTest.C
 	$(CC) -c $<  -std=c++11
 
-myClient.o:	myClient.C
-	$(CC) -c $<  -std=c++11		
 
 
 
 main:	$(OBJS)
 	$(CC) -o $@ $^ -L/usr/lib/x86_64-linux-gnu -ldl -lstdc++  -std=c++11 -lpthread $(LIBS)
-
-myClient:	myClient.o SIMPLESOCKET.o
-	$(CC) -o myClient myClient.o SIMPLESOCKET.o -L/usr/lib/x86_64-linux-gnu -ldl -lstdc++  -std=c++11
 
 mainTest:	mainTest.o
 	$(CC) -o $@ $^ TASK1.o SHA256.o -L/usr/lib/x86_64-linux-gnu -ldl -lstdc++  -std=c++11 -lpthread $(LIBS)

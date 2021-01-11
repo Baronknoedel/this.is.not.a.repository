@@ -1,10 +1,6 @@
 /*
- * client.C
- *
- *  Created on: 11.09.2019
- *      Author: aml
- */
-/*
+//////////////PRAKTIKUM 2//////////////
+
 #include <string>
 #include <iostream>
 #include <unistd.h> //contains various constants
@@ -39,17 +35,14 @@ int main() {
 
 	}
 }
-*/
-/*
- * My_Training_Shots.c
- *
- *  Created on: 07.01.2021
- */
 
-//#ifndef My_Training_Shots_C_   Vom alten Trainingsprogramm
-//#define My_Training_Shots_C_    könnte wichtig sein
+
+//////////////PRAKTIKUM 3//////////////
+*/
 
 using namespace std;
+
+//////////////Implementierung Bibliotheken//////////////
 #include <stdio.h>
 #include <string>
 #include <iostream>
@@ -59,154 +52,122 @@ using namespace std;
 #include <time.h>
 #include <stdlib.h>
 
-void StartNewGame(TCPclient *ptrtcp);
-int varianteA(TCPclient *ptrtcp);
-int varianteB(TCPclient *ptrtcp);
+//////////////Funktionsdeklatationen//////////////
+void StartNewGame(TCPclient *ptr_tcp);
+int varianteA(TCPclient *ptr_tcp);	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld nacheinander beschossen wird
+int varianteB(TCPclient *ptr_tcp);	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld zufällig beschossen wird
 
-stringstream msgStream;
-string response = "";
+//////////////Globale Variabeln//////////////
+stringstream msgStream;	//Stringstream Datentyp dient zur Kommunikation, einlesen & extrahieren von Daten aus enthaltenem string Problemlos moeglich.
+						//Kann nicht direkt kopiert werden, sollte immer via Call-by-Reference übergeben werden.
+string response = "";	//Leerer string, dient zum vergleich des Schuss resultats.
 
+//////////////Main Funktion//////////////
 int main()
 {
 	srand(time(NULL));
-	TCPclient tcp;
+	TCPclient tcp;	//Objekt instantiierung
 
-	string host = "localhost";
-	tcp.conn(host , 20220);
+	string host = "localhost";	//String zur Server-Client Verbindung
+	tcp.conn(host , 20220);		//Funktion zur Verbindung mit Port nummer
 
-	int x = varianteB(&tcp);
-	cout << "Anzahl Schuesse: " << x << endl;
+	int shot_value = varianteB(&tcp);	//Funktionsaufruf & zuweisung des Rückgabewertes
+	cout << "Anzahl Schuesse: " << shot_value << endl;	//Bildschirmausgabe
 }
 
-void StartNewGame(TCPclient *ptrtcp)
+//////////////Funktionsdefinition//////////////
+// Algorithmus um neues Spiel zu starten
+void StartNewGame(TCPclient *ptr_tcp)
 {
-	msgStream << "NEWGAME";
-	response = "";
-	ptrtcp->sendData(msgStream.str());
-	msgStream.str("");
-	response = ptrtcp->receive(32);
-}
-
-	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld nacheinander beschossen wird
-	int varianteA(TCPclient *ptrtcp){
-		StartNewGame(ptrtcp);
-		int x = 1;
-		int y = 1;
-		int counter = 0;
-		int res;
-		
-		cout << endl;
-
-		while(y <= 10)
-		{
-			while(x <= 10)
-			{
-				msgStream << "SHOT[" <<  x << ", "<< y <<"]" ;
-				ptrtcp->sendData(msgStream.str());
-				msgStream.str("");
-				response = ptrtcp->receive(32);
-				counter++;
-				x++;
-
-				if(response.compare(0,8,"RESULT[4") == 0)
-				{
-					return counter;
-				}
-			}
-			y++;
-			x = 1;	
-		}
-	return counter;
-	}
-
-
-
-	// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld zufällig beschossen wird
-	int varianteB(TCPclient *ptrtcp){
-		StartNewGame(ptrtcp);
-
-		int res=0; // Rückgabewert Schuss
-		int counter = 0; // Schuss Counter
-		int x = 0; // X wert Schuss
-		int y = 0; // Y wert Schuss
-
-		// Kontroll Array erzeugen
-		int a [10] [10];
-
-		cout << endl;
-
-	
-		int k;
-		int j;
-
-
-		//Array Nullsetzen
-	
-		for(k=0; k<10;k++)
-		{	
-			for(j=0; j<10;j++)
-			{
-				a[k][j]=0; 
-				
-			}
-		}
-
-		/*
-		
-		Array Ausgabe
-		
-		for(k=0; k<xMax;k++)
-		{	
-			for(j=0; j<yMax;j++)
-			{
-				cout<<a[k][j]<<endl;
-				
-			}
-		}*/
-
-
-	while (response.compare(0,8,"RESULT[4") != 0)
+	msgStream << "NEWGAME";		//"Befuellen" des stringstream mit unserem Code wort
+	ptr_tcp->sendData(msgStream.str());	//Sendet Daten zu dem verbundenen Host (Mit kopien der momentanen status des Sendefensters)
+	msgStream.str("");					
+	response = ptr_tcp->receive(32);	//schreibt in response die angekommenen Daten
+	if(response.compare(0,4,"OKAY") == 0)		// Vergleicht die Daten mit einem festen string
 	{
-		x = (rand () % 10) + 1;
-		y = (rand () % 10) + 1;
-
-		if (a[x][y] == 1)
-		{ }else
+		cout << "New Game Has been Started" << endl << endl;
+	}
+	else
+	{
+		cout << "Game has not been Started" << endl;
+	}
+}
+// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld nacheinander beschossen wird
+int varianteA(TCPclient *ptr_tcp)
+{
+	StartNewGame(ptr_tcp);		//funktionsaufruf um Neues Spiel zu starten
+	int x_coord = 1;
+	int y_coord = 1;
+	int counter = 0;
+	
+	cout << endl;
+	while(y_coord <= 10)		//Jede Zeile wird nacheinander abgearbeitet
+	{
+		while(x_coord <= 10)		//In jeder Zeile wird Jede Zelle Hochgezählt und abgearbeitet
 		{
-			msgStream << "SHOT[" <<  x << ", "<< y <<"]" ;
-			ptrtcp->sendData(msgStream.str());
-			msgStream.str("");
-			response = ptrtcp->receive(32);
+			msgStream << "SHOT[" <<  x_coord << ", "<< y_coord <<"]" ; 	//"Befuellen" des stringstream mit unserem Codewort und den Koordinaten
+			ptr_tcp->sendData(msgStream.str());		//Sendet Daten zu dem verbundenen Host (Mit kopien der momentanen status des Sendefensters)
+			msgStream.str("");						//Löschen der schon verwendeten Daten aus dem msgStream
+			response = ptr_tcp->receive(32);		//schreibt in response die angekommenen Daten
 			counter++;
-			a[x][y] = 1;
+			x_coord++;
+			if(response.compare(0,8,"RESULT[4") == 0)	// Vergleicht die Daten mit einem festen string, Falls alle Schiffe Zerstört sind wird Funktion
+														// abgebrochen und returened die momentane anzahl an geschossenen Schüssen
+			{	
+				return counter;
+			}
+		}
+		y_coord++;
+		x_coord = 1;	
+	}
+return counter;
+}
+// Algorithmus um alle Schiffe zu versenken, bei dem jedes Feld zufällig beschossen wird
+int varianteB(TCPclient *ptr_tcp)
+{
+	StartNewGame(ptr_tcp);		//funktionsaufruf um Neues Spiel zu starten
+	int counter = 0;
+	int x_coord = 0;
+	int y_coord = 0;
+	
+	int already_shot [10] [10];	//2D Kontroll Array erzeugen
+
+	cout << endl;
+
+	int Cx;
+	int Cy;
+
+
+	for(Cx=0; Cx<10;Cx++)			//2DArray Nullsetzen
+	{	
+		for(Cy=0; Cy<10; Cy++)
+		{
+			already_shot[Cx][Cy]=0; 
+
 		}
 	}
 
+	while (response.compare(0,8,"RESULT[4") != 0)		// Vergleicht die Daten mit einem festen string, führt while schleife aus solange es ungleich ist
+	{
+		x_coord = (rand () % 10) + 1;		//Erzeugt Zufallszahl und Damit X-Koordinaten zwischen 1 und 10
+		y_coord = (rand () % 10) + 1;		//Erzeugt Zufallszahl und Damit Y-Koordinaten zwischen 1 und 10
 
-	/*	do
+		if (already_shot[x_coord][y_coord] == 1)	//Abfrage ob wir an diese Koordinaten schon geschoffen haben
 		{
+													//Nichts
+		}
 
-				x = (rand () % 10) + 1;
-				y = (rand () % 10) + 1;
-
-				if (a[x][y] == 1)
-				{ }
-				else
-				{
-					msgStream << "SHOT[" <<  x << ", "<< y <<"]" ;
-					ptrtcp->sendData(msgStream.str());
-					msgStream.str("");
-					response = ptrtcp->receive(32);
-					counter++;
-					a[x][y] = 1;
-				}
-
-		cout <<"test" << endl;
-
-		}while(response.compare(0,8,"RESULT[4") != 0);
-	*/	
-		cout << "alle Schiffe versenkt" << endl;
-
-		return counter;
+		else										//Falls nicht
+		{
+			msgStream << "SHOT[" <<  x_coord << ", "<< y_coord <<"]" ;	//"Befuellen" des stringstream mit unserem Codewort und den Koordinaten
+			ptr_tcp->sendData(msgStream.str());			//Sendet Daten zu dem verbundenen Host (Mit kopien der momentanen status des Sendefensters)
+			msgStream.str("");							//Löschen der schon verwendeten Daten aus dem msgStream
+			response = ptr_tcp->receive(32);			//schreibt in response die angekommenen Daten
+			counter++;
+			already_shot[x_coord][y_coord] = 1;					//Setzt den Wert in unserem Kontroll array auf "Schon hingeschossen"
+		}
 	}
-		
+
+		cout << "alle Schiffe versenkt" << endl;
+		return counter;
+}
