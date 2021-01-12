@@ -71,7 +71,16 @@ int main()
 	string host = "localhost";	//String zur Server-Client Verbindung
 	tcp.conn(host , 20220);		//Funktion zur Verbindung mit Port nummer
 
-	int shot_value = varianteB(&tcp);	//Funktionsaufruf & zuweisung des Rückgabewertes
+	int shot_value;
+	for (int i=0; i<=10; i++)
+	{
+	
+		cout << varianteA(&tcp);	//Funktionsaufruf & zuweisung des Rückgabewertes
+	}
+	
+	string msg = string("BYEBYE");
+	tcp.sendData(msg);
+	msg = tcp.receive(32);
 	cout << "Anzahl Schuesse: " << shot_value << endl;	//Bildschirmausgabe
 }
 
