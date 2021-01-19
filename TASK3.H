@@ -32,6 +32,7 @@ using namespace std;
  * of a the simplified game battle ship.
  *
  */
+
 namespace TASK3{
 
 

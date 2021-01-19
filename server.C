@@ -1,3 +1,18 @@
+/**
+ * 
+ * \file server.C
+ * 
+ * \brief Contains class server.C
+ * 
+ */
+
+/**
+ * 
+ * \class myTCPServer
+ * 
+ * \brief Implements a class which is inherited from TCPServer
+ * 
+ */
 
 //////////////Implementierung Bibliotheken//////////////
 #include <cstdio> // standard input and output library
@@ -23,11 +38,33 @@ using namespace TASK3;				// Namensraum Vorgeben
 class myTCPServer : public TCPserver 		//Klassen Definition und vererbung
 {
 	public:
+		/**
+		 * 
+		 * \brief constructor
+		 * 
+		 * \param port int number of the client
+		 * 
+		 * \param maxDataSize int maximal size of the messages the server can receive
+		 * 
+		 */
 		myTCPServer(int port, int maxDataSize) : TCPserver(port, maxDataSize) {;};	//vererbung des Konstruktors
 
 	protected:
+		/**
+		 * 
+		 * \brief Defines the responses to the given received data
+		 * 
+		 * \param input contains the data the server has received
+		 * 
+		 * \return string containing the response of the server
+		 * 
+		 */
 		string 	myResponse(string input);		//Definition einer virtuellen Methode
-
+		/**
+		 * 
+		 * \brief uses the class World as a pointer
+		 * 
+		 */
 		World	*world_;						//Erstellen eines Zeigers von der Klasse World
 
 
