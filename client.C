@@ -106,7 +106,7 @@ int main()
 	tcp.conn(host , 20220);		//Funktion zur Verbindung mit Port nummer
 
 	int shot_value;
-	for (int i=0; i<1; i++)
+	for (int i=0; i<99; i++)
 	{
 		cout << MethodB(&tcp) << endl;	//Funktionsaufruf & zuweisung des Rückgabewertes
 		cout.flush();
